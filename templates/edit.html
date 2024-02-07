@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Task</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Edit Task</h1>
+    <form method="POST" action="{{ url_for('edit_task', task_id=task_id) }}">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" value="{{ task['title'] }}" required>
+        
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required>{{ task['description'] }}</textarea>
+        
+        <label for="due_date">Due Date:</label>
+        <input type="date" id="due_date" name="due_date" value="{{ task['due_date'] }}" required>
+        
+        <label for="priority">Priority:</label>
+        <select id="priority" name="priority" required>
+            <option value="low" {% if task['priority'] == 'low' %}selected{% endif %}>Low</option>
+            <option value="medium" {% if task['priority'] == 'medium' %}selected{% endif %}>Medium</option>
+            <option value="high" {% if task['priority'] == 'high' %}selected{% endif %}>High</option>
+        </select>
+        
+        <button type="submit">Update Task</button>
+    </form>
+</body>
+</html>

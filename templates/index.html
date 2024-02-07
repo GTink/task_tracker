@@ -50,19 +50,39 @@
             <th>Description</th>
             <th>Due Date</th>
             <th>Priority</th>
+            <th>Status</th>
+            <th>Toggle Priority</th>
             <th>Actions</th>
         </tr>
         {% for task in tasks %}
         <tr>
             <td>{{ task['title'] }}</td>
             <td>{{ task['description'] }}</td>
-            <td>{{ task['due_date'] }}</td>
-            <td>{{ task['priority'] }}</td>
+            <td>{{ task['due_date'].strftime('%m-%d-%Y') }}</td>
             <td>
-                {% if not task['completed'] %}
-                <a href="/complete/{{ loop.index0 }}">Complete</a>
+                <div class="priority-container">
+                    <span class="priority {{ task['priority'] }}">{{ task['priority'] }}</span>
+                </div>
+            </td>
+            <td>
+                {% if task['completed'] %}
+                    Completed
+                {% else %}
+                    Pending
                 {% endif %}
-                <a href="/delete/{{ loop.index0 }}">Delete</a>
+            </td>
+            <td>
+                <a href="{{ url_for('toggle_priority', task_id=loop.index-1, direction='up') }}">Up</a>
+                <a href="{{ url_for('toggle_priority', task_id=loop.index-1, direction='down') }}">Down</a>
+            </td>
+            <td>
+                {% if task['completed'] %}
+                    <a href="{{ url_for('pending_task', task_id=loop.index-1) }}">Pending</a>
+                {% else %}
+                    <a href="{{ url_for('complete_task', task_id=loop.index-1) }}">Complete</a>
+                {% endif %}
+                <a href="{{ url_for('edit_task', task_id=loop.index-1) }}">Edit</a>
+                <a href="{{ url_for('delete_task', task_id=loop.index-1) }}">Delete</a>
             </td>
         </tr>
         {% endfor %}
